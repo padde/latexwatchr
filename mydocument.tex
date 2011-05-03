@@ -1,0 +1,88 @@
+\documentclass[a4paper,12pt]{scrartcl}
+
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{listings}
+\definecolor{keyword}      {rgb}{0.7, 0.3, 0.2}
+\definecolor{comment}      {rgb}{0.4, 0.7, 0.7}
+\definecolor{string}       {rgb}{0.0, 0.7, 0.3}
+\definecolor{line_numbers} {rgb}{0.7, 0.7, 0.7}
+\lstset{
+    showspaces=false, 
+    showstringspaces=false,
+    basicstyle=\ttfamily,
+    keywordstyle=\color{keyword}, 
+    commentstyle=\color{comment}, 
+    stringstyle=\color{string},
+    numbers=left, 
+    numberstyle=\color{line_numbers}, 
+    stepnumber=1, 
+    numbersep=10pt,
+    breaklines=true
+}
+
+\setcounter{tocdepth}{2}
+
+
+\title{\LaTeX{}watchr}
+\author{Patrick Oscity}
+\date{03.05.2011}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+
+\section{Introduction}
+
+Welcome to \LaTeX{}watchr. If you managed to compile this document, everything should be up and running\footnote{Congratulations!}. Now go ahead and start writing a fancy \LaTeX{} document. In the following sections you will find some content to test if everything works as expected.
+
+
+
+\section{UTF-8 Encoding}
+
+Just checking: ÄäÁáÀàËëÉéÈèÍíÌìÖöÓóÒòÜüÚúÙùß fi ffi fl ffl
+
+
+
+\section{Mathematical Equations}
+
+Now, let's have a look at the Quadratic Formula:
+
+\begin{equation}
+    \begin{array}{*{20}c}
+       {x = \frac{{ - b \pm \sqrt {b^2  - 4ac} }}{{2a}}} & {{\rm{when}}} & {ax^2  + bx + c = 0}  \\
+    \end{array}
+\end{equation}
+
+
+
+\section{Source Code}
+
+\lstinputlisting[
+    language=Ruby,
+    label=Codebeispiel,
+    caption=The \LaTeX{}watchr source code
+]{LaTeXwatchr}
+
+
+
+\section{Embedding Images}
+
+Now, let's have a look at the following image. Is everything working here? I hope so…
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=50mm]{images/sample_image.png}
+    \caption{sample \lstinline{.png} image with color and transparency}
+\end{figure}
+
+
+\end{document}
