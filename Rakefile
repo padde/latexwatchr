@@ -1,5 +1,7 @@
 task :clean do
-  dirname = "output/"
+  require 'latexwatchr/latex.rb'
+  dirname = Latex::TEX_DIR + Latex::OUTPUT_DIR
+  
   dir = Dir.open(dirname)
   
   dir.each do |filename|
