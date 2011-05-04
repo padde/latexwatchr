@@ -5,6 +5,7 @@ task :clean do
   dir.each do |filename|
     next if filename == '.'
     next if filename == '..'
+    
     f = dirname + filename 
     File.delete(f)
   end

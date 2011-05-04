@@ -11,4 +11,5 @@
 Thumbs.db
 
 # TeX outputs
-output/*.*
+tex/output/*.*
+tex/images/.*eps-converted-to.pdf
