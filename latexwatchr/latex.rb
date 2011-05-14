@@ -1,42 +1,41 @@
 class Latex
-  TEX_DIR    = "tex/"
-  OUTPUT_DIR = "output/"
+  require 'fileutils'
+  
+  BASE_DIR = File.expand_path('.') + '/'
+  TEX_DIR = File.expand_path('tex') + '/'
   PDF_LATEX  = true
   
   def initialize source, latex_flags = nil
-    @source = "../" + source
-    latex_flags ||= [ "-halt-on-error", "-file-line-error", "-output-directory #{OUTPUT_DIR}" ].join(" ")
+    @source = source
+    latex_flags ||= [ "-halt-on-error", "-file-line-error" ].join(" ")
     @latex_flags = latex_flags
   end
   
   def compile!
-    Dir.chdir(TEX_DIR)
+    status_ok = 1
     
     if PDF_LATEX
-      system "pdflatex -draftmode #{@latex_flags} #{@source}" if must_prepare?
-      system "pdflatex #{@latex_flags} #{@source}"
+      status_ok = system "pdflatex -draftmode #{@latex_flags} #{@source}" if must_prepare?
+      status_ok = system "bibtex #{aux_file}"
+      status_ok = system "pdflatex #{@latex_flags} #{@source}"
     else
-      system "latex #{@latex_flags} #{@source}" if must_prepare?
-      system "latex #{@latex_flags} #{@source}"
-      system "dvips #{dvi_file}"
-      FileUtils.move(ps_filename, ps_file)
-      system "ps2pdf #{ps_file}"
-      FileUtils.move(pdf_filename, pdf_file)
+      status_ok = system "latex #{@latex_flags} #{@source}" if must_prepare?
+      status_ok = system "bibtex #{aux_file}"
+      status_ok = system "latex #{@latex_flags} #{@source}"
+      status_ok = system "dvips #{dvi_file}" if status_ok
+      status_ok = system "ps2pdf #{ps_file}" if status_ok
     end
     
-    Dir.chdir('..')
+    status_ok
   end
   
   def must_prepare?
-    d = Dir.open OUTPUT_DIR
-    d.entries.count == 2
+    # REDO
+    true
   end
 
-  def pdf_filename; @source.gsub(/tex$/, 'pdf'); end
-  def dvi_filename; @source.gsub(/tex$/, 'dvi'); end
-  def ps_filename;  @source.gsub(/tex$/, 'ps');  end
-  
-  def pdf_file; OUTPUT_DIR + pdf_filename; end
-  def dvi_file; OUTPUT_DIR + dvi_filename; end
-  def ps_file;  OUTPUT_DIR + ps_filename;  end
+  def aux_file; @source.gsub(/tex$/, 'aux'); end
+  def pdf_file; @source.gsub(/tex$/, 'pdf'); end
+  def dvi_file; @source.gsub(/tex$/, 'dvi'); end
+  def ps_file;  @source.gsub(/tex$/, 'ps');  end
 end

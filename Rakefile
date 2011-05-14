@@ -1,6 +1,7 @@
+desc 'Clean up the output directory'
 task :clean do
-  require 'latexwatchr/latex.rb'
-  dirname = Latex::TEX_DIR + Latex::OUTPUT_DIR
+  require './latexwatchr/latex.rb'
+  dirname = Latex::TEX_DIR
   
   dir = Dir.open(dirname)
   
@@ -8,7 +9,15 @@ task :clean do
     next if filename == '.'
     next if filename == '..'
     
-    f = dirname + filename 
-    File.delete(f)
+    if filename =~ /.*\.aux/ or
+       filename =~ /.*\.bbl/ or
+       filename =~ /.*\.blg/ or
+       filename =~ /.*\.log/ or
+       filename =~ /.*\.pdf/
+    
+      f = dirname + filename 
+      File.delete(f)
+      # puts "delete#{f}"
+    end
   end
 end
