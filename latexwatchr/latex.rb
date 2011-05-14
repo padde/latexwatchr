@@ -1,7 +1,6 @@
 class Latex
   require 'fileutils'
   
-  BASE_DIR = File.expand_path('.') + '/'
   TEX_DIR = File.expand_path('tex') + '/'
   PDF_LATEX  = true
   
@@ -12,30 +11,52 @@ class Latex
   end
   
   def compile!
-    status_ok = 1
+    ok = false
     
     if PDF_LATEX
-      status_ok = system "pdflatex -draftmode #{@latex_flags} #{@source}" if must_prepare?
-      status_ok = system "bibtex #{aux_file}"
-      status_ok = system "pdflatex #{@latex_flags} #{@source}"
+      ok = system "pdflatex -draftmode #{@latex_flags} #{@source}" if must_prepare?
+      ok = system "bibtex #{aux_file}" if use_bibtex?
+      ok = system "pdflatex #{@latex_flags} #{@source}"
     else
-      status_ok = system "latex #{@latex_flags} #{@source}" if must_prepare?
-      status_ok = system "bibtex #{aux_file}"
-      status_ok = system "latex #{@latex_flags} #{@source}"
-      status_ok = system "dvips #{dvi_file}" if status_ok
-      status_ok = system "ps2pdf #{ps_file}" if status_ok
+      ok = system "latex #{@latex_flags} #{@source}" if must_prepare?
+      ok = system "bibtex #{aux_file}" if use_bibtex?
+      ok = system "latex #{@latex_flags} #{@source}"
+      ok = system "dvips #{dvi_file}" if ok
+      ok = system "ps2pdf #{ps_file}" if ok
     end
     
-    status_ok
+    ok
   end
   
   def must_prepare?
-    # REDO
-    true
+    not file_exists? /.*\.aux$/
+  end
+  
+  def use_bibtex?
+    file_exists? /.*\.bib$/
+  end
+  
+  def file_exists? filename, dir = TEX_DIR
+    match = Dir.entries(dir).detect do |f|
+      f.match filename
+    end
+    
+    not match.nil?
   end
 
-  def aux_file; @source.gsub(/tex$/, 'aux'); end
-  def pdf_file; @source.gsub(/tex$/, 'pdf'); end
-  def dvi_file; @source.gsub(/tex$/, 'dvi'); end
-  def ps_file;  @source.gsub(/tex$/, 'ps');  end
+  def aux_file
+    @source.gsub(/tex$/, 'aux')
+  end
+  
+  def pdf_file
+    @source.gsub(/tex$/, 'pdf')
+  end
+  
+  def dvi_file
+    @source.gsub(/tex$/, 'dvi')
+  end
+  
+  def ps_file
+    @source.gsub(/tex$/, 'ps')
+  end
 end

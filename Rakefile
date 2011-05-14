@@ -12,8 +12,11 @@ task :clean do
     if filename =~ /.*\.aux/ or
        filename =~ /.*\.bbl/ or
        filename =~ /.*\.blg/ or
+       filename =~ /.*\.dvi/ or
        filename =~ /.*\.log/ or
-       filename =~ /.*\.pdf/
+       filename =~ /.*\.pdf/ or
+       filename =~ /.*\.ps/  or
+       filename =~ /.*\.toc/
     
       f = dirname + filename 
       File.delete(f)
