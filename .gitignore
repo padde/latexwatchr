@@ -11,12 +11,4 @@
 Thumbs.db
 
 # TeX outputs
-tex/*.aux
-tex/*.bbl
-tex/*.blg
-tex/*.dvi
-tex/*.log
-tex/*.pdf
-tex/*.ps
-tex/*.toc
-tex/images/.*eps-converted-to.pdf
+tex/*
