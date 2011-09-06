@@ -16,6 +16,7 @@ watch /.*\.tex/ do |md|
     Application.activate "Preview"
   else
     Notification.send :error, "Error in #{source}"
-    Application.activate "Terminal"
+    # Application.activate "Terminal"
+    Application.activate "iTerm"
   end
 end
